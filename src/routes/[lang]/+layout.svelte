@@ -1,14 +1,15 @@
 <script lang="ts">
-    import Header from "../components/header.svelte";
+    import LanguageSelector from '../../components/language-dropdown.svelte'; // Adjust path if necessary
     export let data;
+    let content = data.content
 
-    let navUrls = data.navUrls;
-    let content = data.content.homeUrl
+    let lang = data.lang; // The current language
+
     // console.log(navUrls)
 </script>
 
 <style>
-    #content-container {
+    /* #content-container {
         height:100vh;
         display: flex;
         flex-direction: column;
@@ -23,7 +24,7 @@
     li{
         list-style: none;
         margin-right: 10px;
-    }
+    } */
 
     footer {
         background-color: purple;
@@ -36,24 +37,22 @@
     }
 </style>
 
-<div id="content-container">
-    <header class="content-space">
-        <nav>
-            <ul>
-                <li>
-                    <a href={content}>Home</a>
-                </li>
-                {#each navUrls as navUrl}
-                    <li>
-                        <a href={Object.values(navUrl)[1]}>
-                            {navUrl[Object.keys(navUrl)[0]]}
-                        </a> 
-                    </li>
-                {/each}
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav>
+        <!-- Global navigation (fetched from Umbraco Heartcore) -->
+        <!-- {#each data.globalContent.items as item}
+            <a href={item.url}>{item.name}</a>
+        {/each} -->
+    </nav>
 
+    <!-- Add the language selector -->
+    <LanguageSelector {lang} />
+</header>
+<div>
+    <h1>{content.homeWelcome}</h1>
+    <div>
+        {@html content.homeBody}
+    </div>
     <div class="content content-space">
         <slot></slot>
     </div>

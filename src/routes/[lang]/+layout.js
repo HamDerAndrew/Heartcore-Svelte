@@ -1,34 +1,38 @@
-export async function load() {
+export async function load({ params, fetch }) {
+  console.log("loading")
+    let { lang } = params
+
     const baseUrl = "https://cdn.umbraco.io/content"
     const headers = {
-        "Accept-Language": "en-US",
-        "umb-project-alias": "test-hc-preview-issue"
+        "Accept-Language": lang,
+        "umb-project-alias": "test-hc-preview-issue",
+        "Content-Type": "application/json"
     }
    
-    const data = await fetch(`${baseUrl}/df535aba-d59d-4186-ad39-206f29244bc9/children`, {headers})
-    const dataJson = await data.json()
-    const navigation = dataJson._embedded.content
-    const navUrls = navigation.map(page => {
-        // console.log(page._url.slice(5))
-        // @ts-ignore
-        return {
-            name: page.name,
-            url: page._url.slice(5),
-        }
-        // return navUrlObj[page.name] = page._url
-    })
+    // const data = await fetch(`${baseUrl}/df535aba-d59d-4186-ad39-206f29244bc9/children`, {headers})
+    // const dataJson = await data.json()
+    // const navigation = dataJson._embedded.content
+    // const navUrls = navigation.map(page => {
+    //     // console.log(page._url.slice(5))
+    //     // @ts-ignore
+    //     return {
+    //         name: page.name,
+    //         url: page._url,
+    //     }
+    // })
+    console.log("params:", params)
 
     const dataContent = await fetch(`${baseUrl}/df535aba-d59d-4186-ad39-206f29244bc9`, {headers})
     const dataContentJson = await dataContent.json()
     const content = {
         homeWelcome: dataContentJson.welcome,
         homeBody: dataContentJson.homeBody,
-        homeUrl: dataContentJson._url.slice(5)
+        homeUrl: dataContentJson._url
     }
-    console.log(content.homeUrl)
+    console.log("content: ", content)
 
     // console.log("the obj:", navUrls)
-    return { navUrls, content }
+    return {lang, content }
 }
 
 
