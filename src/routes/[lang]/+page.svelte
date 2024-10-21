@@ -1,8 +1,8 @@
 <script lang="ts">
     import LanguageSelector from '../../components/language-dropdown.svelte'; // Adjust path if necessary
     export let data;
-    let content = data.content
 
+    $: content = data.content
     let lang = data.lang; // The current language
 
     // console.log(navUrls)
